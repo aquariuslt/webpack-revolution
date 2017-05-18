@@ -1,0 +1,12 @@
+# IDEA
+.idea
+*.iml
+
+# VSCode
+.vscode
+
+# Node
+node_modules
+
+# Yarn
+yarn.lock

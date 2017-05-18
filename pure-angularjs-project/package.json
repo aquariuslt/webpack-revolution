@@ -1,0 +1,8 @@
+{
+  "name": "pure-angularjs-project",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
