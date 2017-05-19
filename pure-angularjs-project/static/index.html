@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ita-app">
+<head>
+  <title>Pure AngularJS Application</title>
+  <base href="/#!/">
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- Header Area -->
+<h2>Pure AngularJS Application</h2>
+<a ui-sref="home">Home</a>
+<a ui-sref="about">About</a>
+<!-- Router View Area -->
+<ui-view></ui-view>
+
+
+<!-- Vendor JS Files -->
+<script type="text/javascript" src="js/vendor/angular.js"></script>
+<script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
+
+<!-- Own Application JS Files -->
+<script type="text/javascript" src="js/app/app.js"></script>
+<script type="text/javascript" src="js/app/routes.js"></script>
+
+</body>
+</html>

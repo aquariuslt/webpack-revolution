@@ -7,6 +7,11 @@
 
 # Node
 node_modules
+*.log
 
 # Yarn
 yarn.lock
+
+# Static Built Resources
+public
+
