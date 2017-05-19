@@ -44,6 +44,7 @@ var webpackProdConfig = merge(webpackBaseConfig, {
       compress: {
         warnings: false
       },
+      mangle: false,
       sourceMap: true
     }),
     new webpack.LoaderOptionsPlugin({

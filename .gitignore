@@ -15,3 +15,5 @@ yarn.lock
 # Static Built Resources
 public
 
+# Maven Built
+target

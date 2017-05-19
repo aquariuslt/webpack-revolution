@@ -5,6 +5,11 @@ module.exports = {
   dir: {
     src: 'src',
     build: 'build',
-    dist: 'public'
+
+    // default: public
+    // backend-springboot : ../backend-springboot/src/main/resources/public
+    // backend-koa: ../backend-koa/public
+    // backend-express:  ../backend-express/public
+    dist: '../backend-koa/public'
   }
 };

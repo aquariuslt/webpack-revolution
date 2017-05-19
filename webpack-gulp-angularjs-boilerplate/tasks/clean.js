@@ -20,5 +20,7 @@ gulp.task('clean:build', function () {
 gulp.task('clean:dist', function () {
   gutil.log('Deleting dist folder');
   return gulp.src(baseConfig.dir.dist)
-    .pipe(rimraf());
+    .pipe(rimraf({
+      force: true  // <== why adding this option? for cross-project folder deployment
+    }));
 });
