@@ -1,0 +1,5 @@
+<section ng-controller="navbarController as vm">
+  <a ng-repeat="menu in vm.menus track by $index" ui-sref="{{menu.state}}">
+    {{menu.displayName}}
+  </a>
+</section>

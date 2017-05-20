@@ -6,11 +6,11 @@ module.exports = function ($stateProvider) {
     .state({
       name: 'login',
       url: '/login',
-      template: ' <h3>Login Page</h3>'
+      template: require('../layouts/login/login.html')
     })
     .state({
       name: 'register',
       url: '/register',
-      template: '<h3>Register Page</h3>'
+      template: require('../layouts/register/register.html')
     })
 };

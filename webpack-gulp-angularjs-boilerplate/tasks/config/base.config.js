@@ -10,6 +10,6 @@ module.exports = {
     // backend-springboot : ../backend-springboot/src/main/resources/public
     // backend-koa: ../backend-koa/public
     // backend-express:  ../backend-express/public
-    dist: '../backend-koa/public'
+    dist: 'public'
   }
 };
