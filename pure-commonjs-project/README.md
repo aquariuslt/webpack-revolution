@@ -12,7 +12,7 @@
 
 ### 安装项目依赖
 ```bash
-cd pure-commonjs-proj
+cd pure-commonjs-project
 npm install
 ```
 
