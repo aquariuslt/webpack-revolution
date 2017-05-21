@@ -82,7 +82,7 @@ Macbook:pure-angularjs-project Aquariuslt$ tree
 
 运行`npm start` 之后,我们可以在浏览器的[http://127.0.0.1:3000](http://127.0.0.1:3000) 看到效果
 
-![pure-angularjs-project-runtime.gif](https://ooo.0o0.ooo/2017/05/21/59211855870b8.gif)
+![pure-angularjs-project-runtime-min.gif](https://ooo.0o0.ooo/2017/05/21/592143245b71e.gif)
 
 #### 代码说明
 1.static/index.html
@@ -178,5 +178,4 @@ app.listen(3000);
 与`angular.js` 基本知识之后都能很容易的理解,简直是小菜一碟!
 
 
-在接下来的几个项目样例中,我们将更详细说明
 
