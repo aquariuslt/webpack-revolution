@@ -1,0 +1,19 @@
+# IDEA
+.idea
+*.iml
+
+# VSCode
+.vscode
+
+# Node
+node_modules
+*.log
+
+# Yarn
+yarn.lock
+
+# Static Built Resources
+public
+
+# Maven Built
+target
