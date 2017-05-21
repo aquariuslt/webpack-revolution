@@ -1,3 +1,4 @@
+
 ## Simple-Webpack-AngularJS
 在了解完前面两个项目的代码之后.
 你见识到了:
@@ -145,7 +146,15 @@ module.exports = function ($stateProvider) {
 主体功能是完全一样的,只需要export出去,在模块声明的地方用
 `angular.module(moduleName,[]).config(${export的部分})`即可
 
+
 实际运行效果是一样的.
+
+> P.S. 找个在读的小伙伴测了下 貌似对上面这句不理解.
+> 可以参考下面两个图,是相等的:
+
+![1.png](https://ooo.0o0.ooo/2017/05/21/592187834c401.png)
+![2.png](https://ooo.0o0.ooo/2017/05/21/5921878345d59.png)
+
 
 
 ### 思考
