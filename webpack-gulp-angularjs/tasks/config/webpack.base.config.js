@@ -1,8 +1,5 @@
 /** Created by CUIJA on 05-19-2017.*/
 
-var path = require('path');
-var webpack = require('webpack');
-
 
 module.exports = {
   entry: {
@@ -11,6 +8,5 @@ module.exports = {
   resolve: {
     extensions: ['.js']
   },
-  plugins: [
-  ]
+  plugins: []
 };

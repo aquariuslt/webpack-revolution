@@ -333,17 +333,289 @@ npm run dev
 
 `tasks/config/webpack.base.config.js`
 
+内容:
+```javascript
+module.exports = {
+  entry: {
+    main: './src/main.js'
+  },
+  resolve: {
+    extensions: ['.js']
+  },
+  plugins: []
+};
+```
+
+这里放的是公共的项目entry
+
 `tasks/config/webpack.dev.config.js`
+
+内容
+```javascript
+var os = require('os');
+var webpack = require('webpack');
+var merge = require('webpack-merge');
+
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+
+var baseConfig = require('./base.config');
+var webpackBaseConfig = require('./webpack.base.config');
+
+var pathUtil = require('../util/path-util');
+
+
+const PROTOCOL = 'http://';
+const HOST = '127.0.0.1';
+const PORT = 5001;
+
+var webpackDevConfig = merge(webpackBaseConfig, {
+  devtool: 'source-map',
+  output: {
+    path: pathUtil.root(baseConfig.dir.build),
+    publicPath: PROTOCOL + HOST + ':' + PORT,
+    filename: '[name].bundle.js',
+    sourceMapFilename: '[name].bundle.js.map',
+    chunkFilename: '[id].chunk.js'
+  },
+  devServer: {
+    host: HOST,
+    port: PORT
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"development"'
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            pathUtil.root('node_modules')
+          ) === 0
+        );
+      }
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      favicon: 'src/favicon.ico'
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
+  ]
+});
+
+module.exports = webpackDevConfig;
+```
 
 `tasks/config/webpack.prod.config.js`
 
+内容:
+```javascript
+var webpack = require('webpack');
+var merge = require('webpack-merge');
+
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
+var baseConfig = require('./base.config');
+var webpackBaseConfig = require('./webpack.base.config');
+
+var pathUtil = require('../util/path-util');
+
+
+var webpackProdConfig = merge(webpackBaseConfig, {
+
+  devtool: 'source-map',
+  output: {
+    path: pathUtil.root(baseConfig.dir.dist),
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[id].[chunkhash].js'
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            pathUtil.root('node_modules')
+          ) === 0
+        );
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      sourceMap: true
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    }),
+    new OptimizeCssAssetsPlugin({
+      cssProcessorOptions: {
+        safe: true,
+        discardComments: {
+          removeAll: true
+        }
+      },
+      canPrint: false
+    }),
+    new ExtractTextPlugin({
+      filename: '[name].[chunkhash].css'
+    }),
+    new HtmlWebpackPlugin({
+      template: './' + baseConfig.dir.src + '/index.html',
+      favicon: './' + baseConfig.dir.src + '/favicon.ico',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: false
+      },
+      chunksSortMode: 'dependency'
+    }),
+    new CopyWebpackPlugin(baseConfig.dir.assets)
+  ]
+});
+
+module.exports = webpackProdConfig;
+```
+
+说明:
+
+
 `tasks/util/path-util.js`
+
+内容:
+
+```javascript
+var path = require('path');
+
+const _root = path.resolve(__dirname, '../..');
+
+
+function root(args) {
+  args = Array.prototype.slice.call(arguments, 0);
+  return path.join.apply(path, [_root].concat(args));
+}
+
+
+module.exports.root = root;
+```
+
+
+说明:
+
 
 `tasks/clean.js`
 
+内容:
+```javascript
+var gulp = require('gulp');
+var rimraf = require('gulp-rimraf');
+var sequence = require('gulp-sequence');
+var gutil = require('gulp-util');
+
+var baseConfig = require('./config/base.config');
+
+gulp.task('clean', sequence(['clean:build', 'clean:dist']));
+
+
+gulp.task('clean:build', function () {
+  gutil.log('Deleting build folder');
+  return gulp.src(baseConfig.dir.build)
+    .pipe(rimraf());
+});
+
+
+gulp.task('clean:dist', function () {
+  gutil.log('Deleting dist folder');
+  return gulp.src(baseConfig.dir.dist)
+    .pipe(rimraf());
+});
+```
+
+
+说明:
+
+
 `tasks/build.js`
 
+内容:
+```javascript
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var sequence = require('gulp-sequence');
+
+var webpack = require('webpack');
+
+
+var webpackProdConfig = require('./config/webpack.prod.config');
+
+gulp.task('webpack', function (done) {
+  gutil.log('Webpack building.');
+  webpack(webpackProdConfig, function (error, stats) {
+    if (error) {
+      throw new gutil.PluginError('webpack', error);
+    }
+    gutil.log(stats.toString(webpackProdConfig.stats));
+    gutil.log('Webpack build done');
+    done();
+  });
+});
+
+gulp.task('build', sequence(['clean'], ['webpack']));
+```
+
+说明:
+
 `tasks/serve.js`
+
+内容:
+
+```javascript
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var sequence = require('gulp-sequence');
+
+var webpack = require('webpack');
+
+var WebpackDevServer = require('webpack-dev-server');
+var addDevServerEntrypoints = require('webpack-dev-server/lib/util/addDevServerEntrypoints');
+
+var webpackDevConfig = require('./config/webpack.dev.config');
+
+
+gulp.task('serve', function () {
+  gutil.log('Webpack building.');
+  gutil.log(webpackDevConfig.devServer.host + ':' + webpackDevConfig.devServer.port);
+  addDevServerEntrypoints(webpackDevConfig, webpackDevConfig.devServer);
+  var compilerConfig = webpack(webpackDevConfig);
+  new WebpackDevServer(compilerConfig, webpackDevConfig.devServer)
+    .listen(webpackDevConfig.devServer.port, webpackDevConfig.devServer.host, function (error) {
+      if (error) {
+        throw new gutil.PluginError('webpack', error);
+      }
+    });
+});
+```
+
+说明:
+
 
 ### 总结
 在这一章节,我们大概了解到了:
@@ -359,3 +631,5 @@ require进行管理吗?使用webpack管理媒体资源的主流工作方式是�
 - ......
 
 ### 参考文章
+
+[WebpackMerge是如何Merge Configuration的?](https://github.com/survivejs/webpack-merge)
