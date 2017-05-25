@@ -71,8 +71,7 @@ var webpackProdConfig = merge(webpackBaseConfig, {
         removeAttributeQuotes: false
       },
       chunksSortMode: 'dependency'
-    }),
-    new CopyWebpackPlugin(baseConfig.dir.assets)
+    })
   ]
 });
 

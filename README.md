@@ -983,7 +983,48 @@ npm run dev
 
 这就是`webpack-dev-server`的作用之一.
 
-### 代码说明 TODO
+### 代码说明 
+
+
+`tasks/util/path-util.js`
+
+内容:
+
+```javascript
+var path = require('path');
+
+const _root = path.resolve(__dirname, '../..');
+
+
+function root(args) {
+  args = Array.prototype.slice.call(arguments, 0);
+  return path.join.apply(path, [_root].concat(args));
+}
+
+
+module.exports.root = root;
+```
+
+说明:
+
+有个必要说明的是这个`path-util.js`
+
+webpack的配置里面,
+有一个容易跌坑的地方,便是路径的表示形式.
+
+有一些路径的表示形式是根目录的相对路径,如`./src/main.js`.
+
+有一些路径的表示形式则是配置文件当前路径的相对路径,譬如各种loaders的覆盖路径.
+
+所以这个path-util 是为了方便地统一以根目录为原始路径,调用node.js原生的`path.resolve` api, 来获得统一的系统绝对路径.
+
+
+> P.S. 参考Angular官方文档中对webpack的一个tutorial[WEBPACK: AN INTRODUCTION](https://angular.io/docs/ts/latest/guide/webpack.html)
+> 中提及的一个工具类helpers
+
+
+`tasks/config/webpack.base.config.js`
+
 
 `tasks/config/webpack.base.config.js`
 
@@ -1066,6 +1107,26 @@ var webpackDevConfig = merge(webpackBaseConfig, {
 module.exports = webpackDevConfig;
 ```
 
+说明:
+这里开始配置文件相对上一个章节的样例,更变的非常多.
+
+由于是本地开发时环境配置,所以多出的`devServer`选项指的是`webpack-dev-server`运行时的端口配置,本配置文件默认是5001端口.
+
+在`plugins`方面:  `webpack.DefinePlugin`声明了一个前端构建时的环境变量,
+按照此代码中的说明
+可以在前端文件中使用表达式`process.env.NODE_ENV`,在构建过程中会被转译为对应的`development`字符串,并且在浏览器中不能通过 手敲'process.env.NODE_ENV' 取值. 
+
+> 参考Webpack Definition Plugin[官方文档](https://webpack.js.org/plugins/define-plugin/) 
+
+
+名为`vendor`的`webpack.optimize.CommonsChunkPlugin`的作用,则是将`angularjs`,`@uirouter/angularjs`这种第三方的类库与业务应用的代码分割成不同的文件.
+
+
+> 思考: 这样分割的好处是什么?
+
+
+
+
 `tasks/config/webpack.prod.config.js`
 
 内容:
@@ -1141,8 +1202,7 @@ var webpackProdConfig = merge(webpackBaseConfig, {
         removeAttributeQuotes: false
       },
       chunksSortMode: 'dependency'
-    }),
-    new CopyWebpackPlugin(baseConfig.dir.assets)
+    })
   ]
 });
 
@@ -1151,28 +1211,14 @@ module.exports = webpackProdConfig;
 
 说明:
 
+对于生产环境的配置,则主要是对构建出的文件做一连串的上线前准备,
+包括但不限于:
 
-`tasks/util/path-util.js`
+- 最小化静态资源文件体积
+- 将文件hash值加入到文件命名中
+- .....
 
-内容:
-
-```javascript
-var path = require('path');
-
-const _root = path.resolve(__dirname, '../..');
-
-
-function root(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return path.join.apply(path, [_root].concat(args));
-}
-
-
-module.exports.root = root;
-```
-
-
-说明:
+> 思考: 这里能看到一些与dev.config相同的plugins 配置,为什么会这样?
 
 
 `tasks/clean.js`
@@ -1203,8 +1249,18 @@ gulp.task('clean:dist', function () {
 });
 ```
 
-
 说明:
+
+`clean:dist`,`clean:build`,`clean` 作用都是删除对应的文件夹.
+
+介绍一下这里用到的`gulp`插件:
+
+- `gulp-rimraf` 用于删除对应文件夹
+- `gulp-sequence` gulp 任务流的顺序控制
+- `gulp-util`常用来输出调试信息
+
+
+
 
 
 `tasks/build.js`
@@ -1236,6 +1292,11 @@ gulp.task('build', sequence(['clean'], ['webpack']));
 ```
 
 说明:
+
+build的任务流代码比较容易懂,意思就是先执行预先定义好的`clean`task.
+
+接着执行`webpack`task: 根据`webpack.prod.config.js`构建出生产环境的资源文件
+
 
 `tasks/serve.js`
 
@@ -1270,6 +1331,8 @@ gulp.task('serve', function () {
 
 说明:
 
+`serve`这个task,表示通过读取开发时webpack配置`webapck.dev.config`, 启动一个`webapck-dev-server`的实例.
+
 
 ### 总结
 在这一章节,我们大概了解到了:
@@ -1281,11 +1344,10 @@ gulp.task('serve', function () {
 - 那么CSS也能通过webpack构建吗, CSS的哪种模块导入导出语法能够被`webpack`或其`loaders`正确识别?
 - 那么项目的静态媒体资源,比如图标,字体,固定的logo图片等应该如何配置,也需要使用
 require进行管理吗?使用webpack管理媒体资源的主流工作方式是怎样的?
-- AngularJS 里面的directive,component,service,values,constant,service,factory等其他功能,应该在项目中如何运行
+- AngularJS 里面的directive,component,service,values,constant,service,factory等其他功能,应该如何以CommonJS的形式编写?
 - ......
 
 ### 参考文章
 
 [WebpackMerge是如何Merge Configuration的?](https://github.com/survivejs/webpack-merge)
-
 
