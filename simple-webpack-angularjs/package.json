@@ -6,12 +6,12 @@
     "start": "webpack && node server.js"
   },
   "dependencies": {
-    "@uirouter/angularjs": "^1.0.3",
-    "angular": "^1.6.4",
+    "@uirouter/angularjs": "^1.0.5",
+    "angular": "^1.6.5",
     "express": "^4.15.3"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^2.28.0",
-    "webpack": "^2.6.0"
+    "html-webpack-plugin": "^2.29.0",
+    "webpack": "^3.1.0"
   }
 }

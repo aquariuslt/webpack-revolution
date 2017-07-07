@@ -10,7 +10,7 @@
     "express": "^4.15.3"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^2.28.0",
-    "webpack": "^2.6.0"
+    "html-webpack-plugin": "^2.29.0",
+    "webpack": "^3.1.0"
   }
 }
