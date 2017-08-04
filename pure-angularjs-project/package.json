@@ -6,6 +6,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "webpack": "^3.4.1"
   }
 }
