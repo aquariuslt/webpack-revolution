@@ -7,10 +7,10 @@
     "start": "webpack && node server.js"
   },
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.15.4"
   },
   "devDependencies": {
     "html-webpack-plugin": "^2.30.1",
-    "webpack": "^3.4.1"
+    "webpack": "^3.5.4"
   }
 }
