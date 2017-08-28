@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "express": "^4.15.3",
-    "webpack": "^3.4.1"
+    "webpack": "^3.5.5"
   }
 }
