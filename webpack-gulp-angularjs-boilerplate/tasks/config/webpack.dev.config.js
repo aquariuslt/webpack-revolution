@@ -1,12 +1,10 @@
 /** Created by CUIJA on 05-19-2017.*/
 
-var os = require('os');
 var webpack = require('webpack');
 var merge = require('webpack-merge');
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 
 var baseConfig = require('./base.config');
 var webpackBaseConfig = require('./webpack.base.config');
@@ -68,6 +66,13 @@ var webpackDevConfig = merge(webpackBaseConfig, {
       timings: true,
       chunks: true,
       chunkModules: false
+    },
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8080/', // suppose to update your api to
+        secure: false,
+        ws: true
+      }
     }
   }
 });

@@ -52,7 +52,7 @@ npm start
 ### 过程简介
 在运行`npm start`之后,到底经过了什么样的操作呢?
 大概是如下一个流程:
-1.`npm start`命令,先指向了`package.json`里面`scripts`部分的`start`.
+1. `npm start`命令,先指向了`package.json`里面`scripts`部分的`start`.
 以`package.json`文件为例:`npm start`指向了一个`webpack && node server.js`的命令.
 
 ```json
@@ -81,8 +81,8 @@ npm start
 使用`express.js`监听某个端口(3001),对某个文件夹(public)进行静态资源的监控.
 
 讲到这里,相信大家已经大概知道
-1.`npm start` 实际调用的其他命令
-2.`webpack`这个命令,会执行打包构建的工作,把构建好的文件输出到指定的文件夹.
+1. `npm start` 实际调用的其他命令
+2. `webpack`这个命令,会执行打包构建的工作,把构建好的文件输出到指定的文件夹.
 
 `webpack`命令的详细工作流程,在接下来的部分会讲到.
 
@@ -104,7 +104,7 @@ npm start
 再对`src`下的源代码文件做逐一说明.
 
 
-1.webpack.config.js
+1. webpack.config.js
 
 刚刚在执行`npm start`命令的时候,有些同学可能有困惑:
 "我只执行了`webpack`这个命令,他怎么就帮我全部打包到`public`文件夹了?"
@@ -153,7 +153,7 @@ entry: {
 `entry`部分说明了webpack将以`src/main.js`为打包的入口文件.
 将其require的层层依赖最后都打包到一个文件里面.
 
-```javascript
+```
 output: {
   path: path.resolve('public'),
   publicPath: '',
@@ -170,7 +170,7 @@ output: {
 
 剩余的`publicPath`,`chunkFilename`目前暂时不用关心.
 
-```javascript
+```
 plugins: [
   new HtmlWebpackPlugin({
     template: 'src/index.html'
@@ -185,7 +185,7 @@ webpack有很多插件(包括官方提供的,和流行的第三方插件).
 
 2.main.js   
 
-```
+```javascript
 require('./app/foo');
 require('./app/bar');
 

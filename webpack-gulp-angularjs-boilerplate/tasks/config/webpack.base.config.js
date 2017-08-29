@@ -5,11 +5,9 @@ var webpack = require('webpack');
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-
 var baseConfig = require('./base.config');
 
 var pathUtil = require('../util/path-util');
-
 
 module.exports = {
   entry: {
@@ -43,20 +41,20 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpe?g|gif|svg|ico)$/,
+        test: /\.(png|jpe?g|gif|ico)$/,
         loader: 'url-loader',
         options: {
-          limit: 1000,
+          limit: 10000,
           useRelativePath: true,
           publicPath: './',
           name: '[name].[ext]'
         }
       },
       {
-        test: /\.(woff|woff2|ttf|eot)$/,
+        test: /\.(woff|woff2|svg|ttf|eot)$/,
         loader: 'file-loader',
         options: {
-          useRelativePath: true,
+          useRelativePath: false,
           publicPath: './',
           name: '[name].[ext]'
         }

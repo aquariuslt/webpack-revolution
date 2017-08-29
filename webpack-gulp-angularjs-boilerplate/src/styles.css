@@ -1,3 +1,4 @@
 /* Import Global Styles Here like vendor */
-/* Using normalize.css for reset browser's level css */
-@import "~normalize.css/normalize.css";
+/* Bootstrap css bundled reset.css so that no use to import it once more */
+
+@import "~bootstrap/dist/css/bootstrap.css";
