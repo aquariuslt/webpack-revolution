@@ -3,10 +3,12 @@ package com.ita;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/* Created by Aquariuslt on 5/19/17.*/
+/**
+ * @author Jason Cui
+ */
 @SpringBootApplication
 public class Application {
-  public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }
